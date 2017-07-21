@@ -1,3 +1,8 @@
+
+# July 20 2017 - Daniel Giguere
+# sum taxa below given abundance cutoff, write a table for later
+
+
 #read in kaiju sample. fill = TRUE needed to fill in unequal length rows
 d <- read.table("B_S1_L004_R1_001.kaiju.out.summary", header=T, sep="\t", stringsAsFactors=FALSE, quote = "", check.names=F, comment.char="", fill=TRUE)
 
