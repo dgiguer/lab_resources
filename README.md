@@ -1,1 +1,1 @@
-random scripts. hopefully useful in the future reads processing
+scripts that may be useful
