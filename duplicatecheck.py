@@ -1,7 +1,8 @@
 # September 7 2017
 # Daniel Giguere
 
-# Search for duplicates (as strings) in large text file (diamond output) with python.
+# Search for duplicates in large text file (diamond output) with python and hashes for speed.
+# Currently set up to check for duplicates in first column only.
 # Make sure target file is encoded F-8 and Unix LF.
 
 import collections
@@ -11,7 +12,8 @@ import re
 #make dictionary list
 d = collections.defaultdict(list)
 
-#choose file to search for duplicates (testx.txt)
+# choose file to search for duplicates (testx.txt)
+# 'r' = read only
 with open('testx.txt', 'r') as datafile:
     for line in datafile:
 
