@@ -10,11 +10,11 @@ import csv
 # r mean read only (just in case)
 
 taxList = []
-with open('summedcountsann.txt', 'r') as f:
+with open('test.txt', 'r') as f:
     #skip header row
     next(f)
     for line in f:
-
+        line.split(',', 1)[-1]
         # append list with everything found inside of '[]' in all lines of the file.
         taxList.append(re.findall("\[(.*?)\]", line))
 
@@ -28,4 +28,4 @@ with open('taxList.txt', 'w') as output:
 
     # write each value as its own row
     for val in taxList:
-        writer.writerow([val])
+        writer.writerow(val)

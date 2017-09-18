@@ -4,10 +4,10 @@
 # Search for duplicates in large text file (diamond output) with python and hashes for speed.
 # Currently set up to check for duplicates in first column only.
 # Make sure target file is encoded F-8 and Unix LF.
-
-# to use:
-# put in directory of choice, and put output to txt file:
-# python duplicatecheck.py > duplicate_output.txt
+#
+# put in working directory of .m8 files and pass output to text file:
+# python duplicatecheck.py >> duplicate_output.txt
+#
 
 import collections
 import hashlib
@@ -17,29 +17,35 @@ import glob
 #make dictionary list
 d = collections.defaultdict(list)
 
+# choose file to search for duplicates (testx.txt)
 # 'r' = read only
 
-# generate list of files in cwd.
+# generate list of files
 files = glob.glob('*.m8')
 
 for file in files:
     with open(file, 'r') as datafile:
         for line in datafile:
-
+            
             #split by tab
             line = re.split('\t', line)
+            
+            #concatenate read id and score
+            read = line[0] + " " + line[-1]
 
-            #create hash for first column. choose column number (python
-            #starts at 0)
-            id = hashlib.sha256(line[0]).digest()
-
+            #create hash
+            id = hashlib.sha256(read).digest()
+            
             #use first 2 bytes as key, store rest in value.
-            k = id[0:2]
-            v = id[2:]
+            k = id[0:30]
+            v = id[30:]
 
-            #check if any hashes match
+
+            #check if any hashes match and score is above 95
             if v in d[k]:
-                print "duplicates found in", file, ":", line[0]
+            
+                print "equal best hit found in", file, ":", read
+                
             else:
                 #merge byte back together to be stored in list d.
                 d[k].append(v)
