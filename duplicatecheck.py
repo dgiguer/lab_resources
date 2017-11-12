@@ -41,7 +41,7 @@ for file in files:
             v = id[30:]
 
 
-            #check if any hashes match and score is above 95
+            #check if any hashes match
             if v in d[k]:
             
                 print "equal best hit found in", file, ":", read
