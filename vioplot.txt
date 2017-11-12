@@ -8,7 +8,9 @@
 # - add main title with main = ""
 # - rotate x axis labels with las = 2 (useful if horizontal = TRUE)
 
-vioplot <- function(x, ..., range=1.5, h=NULL, ylim=NULL, names=NULL, horizontal=FALSE, las = 0, main = "",
+library(sm)
+
+vioplot <- function(x, ..., range=1.5, h=NULL, ylim=NULL, names=NULL, horizontal=FALSE, las = 0, main = "", xlab = "", ylab = "",
   col="magenta", border="black", lty=1, lwd=1, rectCol="black", colMed="white", pchMed=19, at, add=FALSE, wex=1,
   drawRect=TRUE)
 {
@@ -125,9 +127,15 @@ vioplot <- function(x, ..., range=1.5, h=NULL, ylim=NULL, names=NULL, horizontal
     if(!horizontal) {
       if(!add){
         plot.window(xlim = xlim, ylim = ylim)
+        #title
         mtext(main, side = 3, line = 1.5, font = 2)
+        #x-axis
+        mtext(xlab, side = 1, line = 2)
+
+        #y-axis
+        mtext(ylab, side = 2, line = 1.5, font = 2)
         axis(2)
-        axis(1,at = at, label=label, las = las)
+        axis(1,at = at, label=label, las = las, cex.axis = 0.5)
       }
 
       box()
@@ -159,9 +167,17 @@ vioplot <- function(x, ..., range=1.5, h=NULL, ylim=NULL, names=NULL, horizontal
     else {
       if(!add){
         plot.window(xlim = ylim, ylim = xlim)
+        #title
         mtext(main, side = 3, line = 1.5, font = 2)
+
+        #x-axis
+        mtext(xlab, side = 1, line = 2)
+
+        #y-axis
+        mtext(ylab, side = 2, line = 1.5, font = 2)
+
         axis(1)
-        axis(2,at = at, label=label, las = las )
+        axis(2,at = at, label=label, las = las, cex.axis = 0.5)
       }
 
       box()
