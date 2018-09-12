@@ -17,11 +17,9 @@ head all_ORFs_idswitched.fasta
 
 ################################################################################
 
-#grep
+#awk
 
-#from a list of read ids, search a fastq file and retrieve the fastq info
-# no-group-separator prevents "--" placed on new lines after each match
-# A -3, get 3 lines after match
-# -h suppress file name output
-# -f from file (one match per line)
-grep --no-group-separator -A 3 -h -f interesting_read_ids.txt all_reads.fastq > output.fastq
+# populate hash table with file one read name
+# search each read name in second file
+# print the line where match occurs, as well as following three lines
+awk 'NR==FNR{hash[$1];next} $1 in hash{print; nr[NR+1]; nr[NR+2]; nr[NR+3]; next} NR in nr' read_ids.txt all_reads.fastq > subset_reads.fastq
