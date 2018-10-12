@@ -15,6 +15,10 @@ sed 's/\(k[0-9]*_[0-9]*_[0-9]*\) \(.*\) \(ID=[0-9]*_[0-9]*\)/\3 \2 \1/' all_ORFs
 head all_ORFs_idswitched.fasta
 #>ID=1_1 # 3 # 236 # -1 # k79_1_1;partial=11;start_type=Edge;
 
+#replace >lcl|WK161157.1_asd_JWR62445.1_1 with for each line in a file JWR62445.1
+#3 groups, backreplace with second group matching part of interest
+sed 's/\(lcl|WK161157.1_cds_\)\([A-Z]*[0-9]*.[0-9*]\)\(_[0-9]*\)/\2/' input.txt > output.txt
+
 ################################################################################
 
 #awk
