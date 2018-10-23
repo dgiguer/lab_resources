@@ -30,3 +30,10 @@ awk 'NR==FNR{hash[$1];next} $1 in hash{print; nr[NR+1]; nr[NR+2]; nr[NR+3]; next
 
 #extract reads from fastq file, convert to fasta
 awk 'NR==FNR{hash[$1];next} $1 in hash{print ">" substr($0, 2); nr[NR+1]; next} NR in nr' read_names.txt all_reads.fastq > subset.fasta
+
+
+# filter fasta according to length using awk (change lengths accordingly)
+awk '(/^[A-Z]/ && length($0)>50 && length($0)< 500) {print x; print}; {x=$0}' input.fasta > output.fasta
+# match sequence lines by A-Z and length > 50 and length < 500
+# print line immediately before matched line (i.e., fasta header) and current line ("print x, print")
+# current line is stored in variable x, so when next line is read, previous line is still available in x variable.
