@@ -47,3 +47,10 @@ awk '$0 ~ ">" { if (c > 450 && c < 600) {print x, seq} c=0; x = $0; seq = ""} $0
     # add the length of the line to the counter (i.e., total the sequence length for each sequence),
     # concatenate line of current sequence to the next line of sequence with a line new line in between (keep sequence as one unit).
 # end rules exits awk
+
+# pull reads from fastq file from file of desired line numbers. useful for randomly selecting subset of reads.
+# generate file of "random" indices from R first. each index points to a line with a header. this file has 1000 numbers from 1:100000. set.seed in order to have reproducible list (useful for paired end reads). 
+# set.seed(1);  numbers <- sort(sample.int(1000000, 1000)) *4 + 1; write.table(numbers, "desired_index_reads.txt", sep="\n", quote = FALSE, row.names=FALSE, col.names=FALSE)
+# populate array a with indices from desired_index_reads.txt (NR==FNR means current record number must equal total record number... i.e., only work on the first file will occur first)
+# in the input.fastq file, if the line number (FNR) is in array a, print it as well as the following three lines to output. 
+awk 'NR==FNR{a[$0]; next} FNR in a{print; getline; print; getline; print; getline; print; next}' desired_index_reads.txt input.fastq > output_subset.fastq
