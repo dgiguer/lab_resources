@@ -60,6 +60,6 @@ awk 'NR==FNR{a[$0]; next} FNR in a{print; getline; print; getline; print; getlin
 # make hash table of representative sequence header (NR=FNR ensures only done on first file)
 # if x in hash, print x and sequence
 # assign x to header (contains ">")
-# assign seq to all following lines that don't contain ">"
-# note: x and seq must be populated after checking or they will be erased
+# assign seq to all following lines that don't contain ">" until another header line is reached
+# once header line is reached, print the previous header and sequence before repopulating variables
 awk '/\*$/, NR==FNR{hash[$3]; next} $1 ~ ">" {if (x in hash) {print x, seq}; x = $1; seq = ""} $1 !~ ">" {seq=seq"\n"$1}' meshclust_output.clstr contigs.fasta > representative_sequences.fasta
