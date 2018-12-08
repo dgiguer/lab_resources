@@ -49,8 +49,17 @@ awk '$0 ~ ">" { if (c > 450 && c < 600) {print x, seq} c=0; x = $0; seq = ""} $0
 # end rules exits awk
 
 # pull reads from fastq file from file of desired line numbers. useful for randomly selecting subset of reads.
-# generate file of "random" indices from R first. each index points to a line with a header. this file has 1000 numbers from 1:100000. set.seed in order to have reproducible list (useful for paired end reads). 
+# generate file of "random" indices from R first. each index points to a line with a header. this file has 1000 numbers from 1:100000. set.seed in order to have reproducible list (useful for paired end reads).
 # set.seed(1);  numbers <- sort(sample.int(1000000, 1000)) *4 + 1; write.table(numbers, "desired_index_reads.txt", sep="\n", quote = FALSE, row.names=FALSE, col.names=FALSE)
 # populate array a with indices from desired_index_reads.txt (NR==FNR means current record number must equal total record number... i.e., only work on the first file will occur first)
-# in the input.fastq file, if the line number (FNR) is in array a, print it as well as the following three lines to output. 
+# in the input.fastq file, if the line number (FNR) is in array a, print it as well as the following three lines to output.
 awk 'NR==FNR{a[$0]; next} FNR in a{print; getline; print; getline; print; getline; print; next}' desired_index_reads.txt input.fastq > output_subset.fastq
+
+# takes mesh clust output and fasta file of sequences (i.e., input for meshclust) and returns only representative sequences from clust output
+# first file: only search representative sequences (i.e., lines with * at the very end)
+# make hash table of representative sequence header (NR=FNR ensures only done on first file)
+# if x in hash, print x and sequence
+# assign x to header (contains ">")
+# assign seq to all following lines that don't contain ">"
+# note: x and seq must be populated after checking or they will be erased
+awk '/\*$/, NR==FNR{hash[$3]; next} $1 ~ ">" {if (x in hash) {print x, seq}; x = $1; seq = ""} $1 !~ ">" {seq=seq"\n"$1}' meshclust_output.clstr contigs.fasta > representative_sequences.fasta
