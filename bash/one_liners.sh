@@ -63,3 +63,12 @@ awk 'NR==FNR{a[$0]; next} FNR in a{print; getline; print; getline; print; getlin
 # assign seq to all following lines that don't contain ">" until another header line is reached
 # once header line is reached, print the previous header and sequence before repopulating variables
 awk '/\*$/, NR==FNR{hash[$3]; next} $1 ~ ">" {if (x in hash) {print x, seq}; x = $1; seq = ""} $1 !~ ">" {seq=seq"\n"$1}' meshclust_output.clstr contigs.fasta > representative_sequences.fasta
+
+# match the header line
+# if c is greater than zero, print it to the file with line break.
+# reset c once you hit the new header
+# for every line following a header (i.e., sequence line), count the number of characters
+# when the script is done, print the count (needed to print length of last contig)
+# output is length of contigs by line. 
+awk '$0 ~ ">" {if  (c > 0) {print c} c=0} $0 !~ ">" {c+=length($0)} END {print c}' contigs.fa > length_counts.txt
+
